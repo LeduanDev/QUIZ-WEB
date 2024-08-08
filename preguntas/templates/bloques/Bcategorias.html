@@ -1,0 +1,38 @@
+<div
+class="relative bg-white border border-gray-300 rounded-lg shadow-lg transform transition duration-500 hover:scale-105">
+<div class="absolute top-3 right-3 rounded-full bg-blue-600 text-white w-6 h-6 text-center">24</div>
+<div class="p-2 flex justify-center">
+    <a href="#">
+        <img class="rounded-md shadow-sm" src="{{ categoria.image.url }}" loading="lazy" alt="Imagen de {{category.nombre}}">
+
+    </a>
+</div>
+
+<div class="flex flex-col gap-2 px-4 pb-3">
+    <div>
+        <a href="#">
+            <h5 class="text-xl font-semibold tracking-tight hover:text-blue-700 text-gray-900">
+                {{categoria.nombre}}
+            </h5>
+        </a>
+
+        <p class="antialiased text-gray-700 text-sm">
+            {{categoria.descripcion }}
+        </p>
+
+        <a href="{% url 'quiz_view_by_category' categoria.id %}"
+            class="inline-flex items-center px-4 py-2 mt-2 text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+            Tomar quizz
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
+                class="ml-2 icon icon-tabler icon-tabler-arrow-big-right-line">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path
+                    d="M12.089 3.634a2 2 0 0 0 -1.089 1.78l-.001 2.586h-4.999a1 1 0 0 0 -1 1v6l.007 .117a1 1 0 0 0 .993 .883l4.999 -.001l.001 2.587a2 2 0 0 0 3.414 1.414l6.586 -6.586a2 2 0 0 0 0 -2.828l-6.586 -6.586a2 2 0 0 0 -2.18 -.434l-.145 .068z" />
+                <path
+                    d="M3 8a1 1 0 0 1 .993 .883l.007 .117v6a1 1 0 0 1 -1.993 .117l-.007 -.117v-6a1 1 0 0 1 1 -1z" />
+            </svg>
+        </a>
+    </div>
+</div>
+</div>
+

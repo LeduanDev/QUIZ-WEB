@@ -1,0 +1,8 @@
+<div class="carousel-item flex-none w-64 relative group">
+    <a href="{% url 'categorias' seccion.id %}">
+        <img src="{{ seccion.image.url }}" alt="{{ seccion.nombre }}" class="transition-transform duration-500 group-hover:scale-105 rounded-lg object-fit h-full w-full">
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 rounded-b-lg transition-opacity duration-500 group-hover:opacity-75">
+            <p class="text-white text-center">{{ seccion.nombre }}</p>
+        </div>
+    </a>
+</div>

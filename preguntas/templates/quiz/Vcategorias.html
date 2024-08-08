@@ -1,0 +1,31 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block contenido %}
+
+
+<h2 class="text-2xl font-bold mb-6">Categorías de la Sección: {{ seccion.nombre }}</h2>
+
+<section class="py-12 px-4 md:px-6">
+    <div class="h-full flex w-full justify-center items-center p-2">
+      <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4 md:p-2 xl:p-5">
+        {% for categoria in categorias %}
+                        <!-- templates/card_block.html -->
+            {% include 'bloques/Bcategorias.html' %}
+
+            {% empty %}
+                 No hay quizz
+         
+        {% endfor %}
+      </div>
+    </div>
+</section>
+
+
+<!-- component -->
+
+
+
+
+
+
+{% endblock %}

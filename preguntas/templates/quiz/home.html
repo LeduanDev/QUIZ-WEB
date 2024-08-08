@@ -1,0 +1,245 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block contenido %}
+
+
+<style>
+.glider-prev, .glider-next {
+  background-color: #4a5568; /* Cambia el color de fondo */
+  color: #fff; /* Cambia el color del ícono */
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.glider-prev:hover, .glider-next:hover {
+  background-color: #2d3748; /* Color de fondo al hacer hover */
+  transform: scale(1.1); /* Agranda el botón al hacer hover */
+}
+
+html {
+  background: #f5f7f8;
+  font-family: system-ui;
+  -webkit-font-smoothing: antialiased;
+  padding: 20px 0;
+}
+
+header {
+  width: 90%;
+  max-width: 1240px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.band {
+  width: 90%;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-gap: 20px;
+}
+
+@media (min-width: 30em) {
+  .band {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 60em) {
+  .band {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .item-1 {
+    grid-column: 1 / span 2;
+  }
+
+  .item-1 h1 {
+    font-size: 24px;
+  }
+}
+
+.card {
+  background: white;
+  text-decoration: none;
+  color: #444;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  position: relative;
+  top: 0;
+  transition: all 0.1s ease-in;
+}
+
+.card:hover {
+  top: -2px;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card article {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card h1 {
+  font-size: 20px;
+  margin: 0;
+  color: #333;
+}
+
+.card p {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.card span {
+  font-size: 12px;
+  font-weight: bold;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2em;
+}
+
+.card .thumb {
+  padding-bottom: 60%;
+  background-size: cover;
+  background-position: center center;
+}
+
+</style>
+
+
+<div class="flex flex-col items-center">
+  <div class="flex flex-col items-center justify-center flex-1 w-full max-w-6xl text-center md:flex-row md:text-left">
+    <div class="flex flex-col items-center justify-center flex-1 space-y-6 md:items-start">
+      <h1 class="text-4xl font-bold text-gray-900 md:text-5xl">Bienvenido a ¿Cuanto sabes?</h1>
+      <p class="text-lg text-gray-700">Ponte a pruba con nuestros quizzes que van desde series, peliculas, deportes y
+        muchos más</p>
+      <div class="flex space-x-4"><button
+          class="px-6 py-3 text-sm font-medium text-white bg-purple-600 rounded-md">Teachers <br>Crea una
+          cuenta</button>
+        <button class="px-6 py-3 text-sm font-medium text-gray-700 bg-gray-200 rounded-md">Administrators
+          <br> Learn
+          more</button>
+      </div>
+    </div>
+    <div class="flex-1 mt-8 md:mt-0"><img src="{% static 'svg/main.svg' %}" /></div>
+  </div>
+</div>
+
+<div class="flex flex-col">
+  <main class="flex-1">
+    <!-- Seccion del carrousel de los diferentes tipos de quizze disponibles  -->
+
+
+    <section class="py-12 px-4 md:px-6">
+      <div class="container mx-auto  p-6 relative">
+        <div class="container mx-auto text-center">
+          <h2 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-[1.3] text-blue-gray-900 mb-4">Categorias</h2>
+          <p class="block antialiased font-sans text-base leading-relaxed text-inherit mb-8 font-normal !text-gray-600">Sección de quizzes dividios en distintas categorias, echale un ojo.</p>
+        </div>
+        
+        <!-- Contenedor del carrusel -->
+        <div class="glider-contain">
+          <div class="glider">
+            {% for seccion in section %}
+            <div class="flex grid-cols-2">     
+              {% include 'bloques/sectionC.html' %}
+            </div>
+            
+            {% endfor %}
+          </div>
+          <!-- Botones de navegación -->
+          <button class="glider-prev">❮</button>
+          <button class="glider-next">❯</button>
+          <!-- Indicadores de página -->
+          <div class="glider-dots mt-12"></div>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- seccion de categorias ramdon -->
+<!-- 
+    <div class="band">
+      {% for categoria in categories %}
+        <div class="item-{{ forloop.counter }}">
+          <a href="{% url 'quiz_view_by_category' categoria.id %}" class="card">
+            <div class="thumb" style="background-image: url({{ categoria.image.url }});"></div>
+            <article>
+              <h1>{{ categoria.nombre }}</h1>
+              {% if categoria.descripcion %}
+                <p>{{ categoria.descripcion }}</p>
+              {% endif %}
+              <span>{{ categoria.autor }}</span>
+            </article>
+          </a>
+        </div>
+      {% empty %}
+        <p>No hay categorías disponibles.</p>
+      {% endfor %}
+    </div> -->
+    
+
+
+
+
+  </main>
+
+
+
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  new Glider(document.querySelector('.glider'), {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    draggable: true,
+    dots: '.glider-dots',
+    arrows: {
+      prev: '.glider-prev',
+      next: '.glider-next'
+    },
+    responsive: [
+      {
+        breakpoint: 768, // Pantallas pequeñas (tabletas en modo vertical)
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        }
+      },
+      {
+        breakpoint: 1024, // Pantallas medianas (tabletas en modo horizontal y portátiles)
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2,
+        }
+      },
+      {
+        breakpoint: 1280, // Pantallas grandes (escritorios)
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 3,
+        }
+      }
+    ]
+  });
+});
+</script>
+
+
+
+
+
+{% endblock %}
