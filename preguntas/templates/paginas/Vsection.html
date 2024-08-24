@@ -1,0 +1,70 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block contenido %}
+
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-8">Exam Categories</h1>
+    
+    <div class="relative mb-6 max-w-md mx-auto">
+        <input
+            type="text"
+            id="filterInput"
+            placeholder="Search categories..."
+            class="pl-10 w-full border border-gray-300 rounded-md py-2"
+            onkeyup="filterCategories()"
+        />
+        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M13 7a6 6 0 11-12 0 6 6 0 0112 0zM4.707 10.707a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414l2-2a1 1 0 000-1.414zm9.372-6.736a1 1 0 00-1.755 1.024l.6 1.1a7.017 7.017 0 01.878 3.978H4.23a7.017 7.017 0 01.878-3.978l.6-1.1a1 1 0 00-1.755-1.024l-.6 1.1A9.01 9.01 0 003.227 10H2a1 1 0 100 2h1.227a9.01 9.01 0 001.149 3.893l.6 1.1a1 1 0 001.755-1.024l-.6-1.1A7.017 7.017 0 014.23 12h7.54a7.017 7.017 0 01-.878 3.978l-.6 1.1a1 1 0 001.755 1.024l.6-1.1A9.01 9.01 0 0016.773 12H18a1 1 0 000-2h-1.227a9.01 9.01 0 00-1.149-3.893l-.6-1.1z" clip-rule="evenodd"></path></svg>
+    </div>
+    
+    <div id="categoryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Categories will be injected here by JavaScript -->
+    </div>
+    
+    <p id="noCategoriesMessage" class="text-center text-gray-500 mt-8 hidden">No categories found.</p>
+  </div>
+  
+  <script>
+    const examCategories = [
+        { id: 1, name: 'Mathematics', icon: '🧮' },
+        { id: 2, name: 'Science', icon: '🔬' },
+        { id: 3, name: 'Literature', icon: '📚' },
+        { id: 4, name: 'History', icon: '🏛️' },
+        { id: 5, name: 'Geography', icon: '🌍' },
+        { id: 6, name: 'Physics', icon: '⚛️' },
+        { id: 7, name: 'Chemistry', icon: '🧪' },
+        { id: 8, name: 'Biology', icon: '🦠' },
+        { id: 9, name: 'Computer Science', icon: '💻' },
+        { id: 10, name: 'Art', icon: '🎨' },
+        { id: 11, name: 'Music', icon: '🎵' },
+        { id: 12, name: 'Physical Education', icon: '🏋️' },
+    ];
+  
+    const categoryGrid = document.getElementById('categoryGrid');
+    const noCategoriesMessage = document.getElementById('noCategoriesMessage');
+  
+    function displayCategories(categories) {
+        categoryGrid.innerHTML = categories.map(category => `
+            <div class="bg-white p-6 rounded-lg shadow-md transform transition-all duration-300 hover:scale-105">
+                <div class="flex flex-col items-center justify-center">
+                    <span class="text-4xl mb-2">${category.icon}</span>
+                    <h2 class="text-xl font-semibold text-center">${category.name}</h2>
+                </div>
+            </div>
+        `).join('');
+    }
+  
+    function filterCategories() {
+        const filterValue = document.getElementById('filterInput').value.toLowerCase();
+        const filteredCategories = examCategories.filter(category =>
+            category.name.toLowerCase().includes(filterValue)
+        );
+        displayCategories(filteredCategories);
+        noCategoriesMessage.style.display = filteredCategories.length === 0 ? 'block' : 'none';
+    }
+  
+    // Initial display
+    displayCategories(examCategories);
+  </script>
+  
+
+{% endblock %}

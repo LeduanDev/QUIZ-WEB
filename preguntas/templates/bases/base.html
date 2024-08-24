@@ -5,35 +5,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Incluir Glider.js CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.8/glider.min.css">
-
-<!-- Incluir Glider.js JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/glider-js@1.7.8/glider.min.js"></script>
-
-
-  <style>
-
-    body {
-      background-image: linear-gradient(to top, #6073f0, #9293f4, #bab6f8, #dedafc, #ffffff) !important;
-      box-sizing: border-box;
-   
-    }
-    
-    
-  </style>
+  {% include 'links/baselink.html' %}
 </head>
+
+<style>
+  body {
+    background-image: linear-gradient(to top, #6073f0, #9293f4, #bab6f8, #dedafc, #ffffff) !important;
+    box-sizing: border-box;
+ 
+  }
+</style>
 
 <body class="min-h-screen flex flex-col">
 
   <div class="flex flex-col items-center w-full">
     <header class="flex items-center justify-between w-full max-w-6xl py-4">
       <div class="flex items-center space-x-4">
-        <img src="" alt="Quizizz Logo" class="h-8" />
+        <img src="{% static 'img/logo2.webp' %}" alt="alt.pmg" class="h-8" />
         <nav class="hidden space-x-6 md:flex">
           <a href="{% url 'home' %}" class="text-sm font-medium text-gray-700">Inicio</a>
-          <a href="#" class="text-sm font-medium text-gray-700">Sobre nosotros</a>
+          <a href="{% url 'allsections' %}" class="text-sm font-medium text-gray-700">Sección de categorias</a>
         </nav>
       </div>
       <div class="flex items-center space-x-4">

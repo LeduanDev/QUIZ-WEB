@@ -3,11 +3,10 @@ from django.shortcuts import render, get_object_or_404
 from .models import Category, Question, Choice, Section
 
 
-
 def home_view(request):
     categories = Category.objects.all()
     section = Section.objects.all()
-    return render(request, 'quiz/home.html', {'categories': categories, 'section': section})
+    return render(request, 'paginas/home.html', {'categories': categories, 'section': section})
 
 def carousel(request):
     categories = Category.objects.all()
@@ -21,10 +20,17 @@ def categoriasSeccion(request, seccion_id=None):
     seccion = get_object_or_404(Section, pk=seccion_id)
     categorias = Category.objects.filter(section=seccion)
     
-    return render(request, 'quiz/Vcategorias.html', {
+    return render(request, 'paginas/Vcategorias.html', {
         'seccion': seccion,
         'categorias': categorias
     })
+
+
+## Vista que contendrá todas las secciones disponibles
+def allSection(request):
+    section = Section.objects.all()
+    return render(request, 'paginas/Vsection.html', {'section': section})
+
 
 def quiz_view(request, category_id=None):
     if category_id:
@@ -43,10 +49,10 @@ def quiz_view(request, category_id=None):
                 total_score += question.points
                 correct_answers += 1
 
-        return render(request, 'quiz/result.html', {
+        return render(request, 'paginas/result.html', {
             'total_score': total_score,
             'correct_answers': correct_answers,
             'total_questions': len(questions)
         })
 
-    return render(request, 'quiz/quiz.html', {'questions': questions, 'category': category})
+    return render(request, 'paginas/quiz.html', {'questions': questions, 'category': category})

@@ -1,0 +1,58 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block contenido %}
+
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+
+
+
+<!-- Bloque del hero -->
+{% include 'bloques/hero.html' %}
+
+<div class="flex flex-col">
+  <main class="flex-1">
+    <!-- Seccion del carrousel de los diferentes tipos de quizze disponibles  -->
+
+
+    <section class="py-12 px-4 md:px-6" >
+      <div class="container mx-auto  p-6 relative">
+        <div class="container mx-auto text-center">
+          <h2
+            class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-[1.3] text-blue-gray-900 mb-4">
+            Categorias</h2>
+          <p class="block antialiased font-sans text-base leading-relaxed text-inherit mb-8 font-normal !text-gray-600">
+            Sección de quizzes dividios en distintas categorias, echale un ojo.</p>
+        </div>
+
+        <!-- Contenedor del carrusel -->
+        <div class="glider-contain">
+          <div class="glider">
+            {% for seccion in section %}
+            <div class="flex justify-center grid-cols-2">
+              {% include 'bloques/sectionC.html' %}
+            </div>
+
+            {% endfor %}
+          </div>
+          <!-- Botones de navegación -->
+          <button class="glider-prev">❮</button>
+          <button class="glider-next">❯</button>
+          <!-- Indicadores de página -->
+          <div class="glider-dots mt-12"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+
+
+<script src="{% static 'js/carousel.js' %}"> </script>
+
+
+
+
+
+{% endblock %}
