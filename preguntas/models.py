@@ -1,3 +1,4 @@
+
 from django.db import models
 
 from webFootball.settings import MEDIA_URL, STATIC_URL
@@ -6,6 +7,7 @@ class Section(models.Model):
     nombre = models.CharField(max_length=100, verbose_name="Nombre de la seccion", blank=True, null=True)
     descrpcion = models.TextField(max_length=400, verbose_name="Descripcion de la seccion", blank=True, null=True)
     image = models.ImageField(upload_to='section-image/', null=True, blank=True)
+    icono = models.CharField(max_length=10, verbose_name="icono", blank=True, null=True)
 
     def get_image(self):
         if self.image:
@@ -16,7 +18,7 @@ class Section(models.Model):
         return self.nombre
 
 
-
+## Modelo para los quizzes, estos son los quizzes
 class Category(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE, blank=True, null=True)
     nombre = models.CharField(max_length=200, null=True, blank=True)
@@ -29,6 +31,9 @@ class Category(models.Model):
         return '{}{}'.format(STATIC_URL, 'img/empty.png')
     def __str__(self):
         return self.nombre
+
+class CategoryimageSlider(models.Model):
+    category = models.ForeignKey(Category, related_name="Imagenes", on_delete=models.CASCADE)
 
 class Question(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)

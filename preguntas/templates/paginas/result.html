@@ -1,13 +1,127 @@
 {% extends 'bases/base.html' %}
 {% block contenido %}
+<style>
+    /* Asegúrate de que el canvas tenga un tamaño definido */
+    #percentageChart {
+        width: 200px;  /* Ajusta el ancho */
+        height: 200px; /* Ajusta la altura */
+    }
+</style>
+<div class="min-h-screen py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative py-3 sm:max-w-xl sm:mx-auto w-full px-4 sm:px-0">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+        <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+            <div class="max-w-md mx-auto">
+                <h1 class="text-3xl font-extrabold text-center text-gray-900 mb-8">Resultado del Quiz</h1>
+                
+
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="relative w-32 h-32">
+                            <canvas id="percentageChart"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-2xl font-bold text-blue-600">{{ percentage_correct }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center text-gray-700">Puntuación Total: {{ total_score }}</p>
+                </div>
+                
+                
+                
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                    <h2 class="text-xl font-semibold mb-4">Respuestas Correctas</h2>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-2">✔️</span>
+                            <span class="text-gray-700">{{ correct_answers }} correctas</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-2">❌</span>
+                            <span class="text-gray-700">{{ incorrect_answers }} incorrectas</span>
+                        </div>
+                        
+                    </div>
+                    <div class="mt-4 bg-gray-200 rounded-full h-2.5">
+                        <div 
+                            class="bg-green-500 h-2.5 rounded-full" 
+                            style="width: {{ percentage_correct }}%;">
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                {% if unanswered_questions > 0 %}
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8" role="alert">
+                    <div class="flex">
+                        <span class="text-yellow-500 mr-2">⚠️</span>
+                        <p>No contestaste {{ unanswered_questions }} pregunta(s).</p>
+                    </div>
+                </div>
+                {% endif %}
+                </div>
+                <div class="text-center display flex gap-4 justify-center">
+                    <a href="{% url 'categorias' seccion_id %}" class="bg-purple-600  hover:bg-black text-white font-bold py-2 px-4 rounded">
+                        Volver a categorias
+                    </a>
+                    <a href="{% url 'take_quizz' id_quizz %}" class="bg-purple-600  hover:bg-black text-white font-bold py-2 px-4 rounded">
+                        Volver a tomar el quizz
+                    </a>
+                </div>
+                
+              
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
-    <title>Quiz Result</title>
+<script>
 
-    <h1>Resultado del Quiz</h1>
-    <p>Puntaje Total: {{ total_score }}</p>
-    <p>Respuestas Correctas: {{ correct_answers }} de {{ total_questions }}</p>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('percentageChart').getContext('2d');
 
+        // Lógica para mostrar el grafico circular de acierto, creando con graph.js, se crean las variables donde se pasan los valores que vienen desde la lógica o vista del backend
+        score = {{ total_score }};
+        porcent = {{percentage_correct }};
+        const totalScore = score;
+        const percentageCorrect = porcent; 
+
+        const myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Correctas', 'Incorrectas'],
+                datasets: [{
+                    label: 'Puntuación',
+                    data: [percentageCorrect, 100 - percentageCorrect],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 1)',  // Color para respuestas correctas
+                        'rgba(211, 211, 211, 1)'  // Color para respuestas incorrectas
+                    ],
+                    borderColor: 'white',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%', //  tamaño del agujero
+                plugins: {
+                    legend: {
+                        display: false // No mostrar la leyenda
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
 
 {% endblock %}

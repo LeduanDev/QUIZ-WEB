@@ -1,22 +1,44 @@
 {% extends 'bases/base.html' %}
 {% block contenido %}
 
-
-<h1>Quiz: {{ category.nombre }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {% for question in questions %}
-        <h2>{{ question.question_text }}</h2>
-        {% for choice in question.choice_set.all %}
-            <div>
-                <input type="radio" name="{{ question.id }}" value="{{ choice.id }}">
-                {{ choice.choice_text }}
-            </div>
-        {% endfor %}
-    {% endfor %}
-    <button type="submit">Submit</button>
-</form>
-
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Título del Quiz -->
+    <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-6">{{ category.nombre }}</h1>
+    
+    <!-- Formulario del Quiz -->
+    <form method="post" class="bg-white shadow-lg rounded-lg p-6">
+      {% csrf_token %}
+      
+      {% for question in questions %}
+        <div class="mb-8">
+          <!-- Pregunta -->
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ question.question_text }}</h2>
+          
+          <!-- Opciones de Respuesta -->
+          <div class="space-y-4">
+            {% for choice in question.choice_set.all %}
+              <label class="block bg-gray-50 p-4 rounded-lg shadow-sm hover:bg-blue-50 cursor-pointer transition">
+                <input type="radio" name="{{ question.id }}" value="{{ choice.id }}" class="mr-3">
+                <span class="text-gray-700">{{ choice.choice_text }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+      
+      <!-- Botón de Enviar -->
+      <div class="text-center flex justify-center">
+        <button type="submit" class="flex items-center bg-purple-600  text-white font-bold py-2 px-6 rounded-lg hover:bg-black transition-colors duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 14l11 -11" /><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></svg>
+          Enviar
+        </button>
+      </div>
+      
+      
+    </form>
+    
+  </div>
 
 
 {% endblock %}

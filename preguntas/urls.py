@@ -5,9 +5,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
      path('', views.home_view, name='home'),
-     path('<int:category_id>/', views.quiz_view, name='quiz_view_by_category'),
+     path('quizz/take/<int:category_id>/', views.quiz_view, name='take_quizz'),
      path('seccion/<int:seccion_id>/', views.categoriasSeccion, name='categorias'),
      path('secciones', views.allSection, name='allsections'),
-     path('carrousel', views.carousel, name='carousel')
+     path('detalles/<int:categorie_id>/', views.details, name='details')
 
 ]

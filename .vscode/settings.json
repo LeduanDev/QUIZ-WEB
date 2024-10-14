@@ -1,0 +1,6 @@
+{
+    "emmet.preferences": {},
+    "emmet.showSuggestionsAsSnippets": true,
+    "tailwindcss-intellisense.trace.server": "verbose",
+    "tailwindCSS.emmetCompletions": true
+}
