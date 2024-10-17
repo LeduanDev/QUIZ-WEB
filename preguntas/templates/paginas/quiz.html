@@ -1,6 +1,6 @@
 {% extends 'bases/base.html' %}
 {% block contenido %}
-
+{% load static %} 
   <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Título del Quiz -->
@@ -26,19 +26,26 @@
           </div>
         </div>
       {% endfor %}
-      
+      <input type="hidden" name="form_submitted" value="true">
+
       <!-- Botón de Enviar -->
       <div class="text-center flex justify-center">
-        <button type="submit" class="flex items-center bg-purple-600  text-white font-bold py-2 px-6 rounded-lg hover:bg-black transition-colors duration-200">
+        <button type="submit" id="enviarForm" class="flex items-center bg-purple-600  text-white font-bold py-2 px-6 rounded-lg hover:bg-black transition-colors duration-200">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 14l11 -11" /><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></svg>
           Enviar
         </button>
       </div>
-      
-      
     </form>
     
   </div>
+
+  {% if enable_timer %}
+  <div id="timer" class="text-center text-xl font-bold text-red-600 mb-6"></div>
+  <div id="quiz-data" data-duration="{{ quiz_duration.total_seconds }}"></div> 
+  <input type="hidden" id="time-left" name="time_left" value="{{ quiz_duration.total_seconds }}">  <!-- Campo oculto -->
+  <script src="{% static 'js/timerQuizz.js' %}"></script>
+{% endif %}
+
 
 
 {% endblock %}

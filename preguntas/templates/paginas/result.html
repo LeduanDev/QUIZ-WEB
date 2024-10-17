@@ -1,12 +1,35 @@
 {% extends 'bases/base.html' %}
 {% block contenido %}
+{% load static %}
 <style>
-    /* Asegúrate de que el canvas tenga un tamaño definido */
-    #percentageChart {
-        width: 200px;  /* Ajusta el ancho */
-        height: 200px; /* Ajusta la altura */
-    }
+/* Circular chart size */
+#percentageChart {
+    width: 200px;  
+    height: 200px; 
+}
+
+/* Linear progress chart container (adjust width here) */
+#linearProgressChart {
+    width: 200px;  /* Make it the same width as the circular chart */
+    height: 30px;  /* Define the height, similar to original progress bar */
+}
+
 </style>
+
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <script>
+        setTimeout(function() {
+            document.querySelector('.alert').style.display = 'none';
+        }, 5000);  // Se oculta después de 5 segundos
+    </script>
+{% endif %}
+
 <div class="min-h-screen py-6 flex flex-col justify-center sm:py-12">
     <div class="relative py-3 sm:max-w-xl sm:mx-auto w-full px-4 sm:px-0">
         <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
@@ -43,10 +66,8 @@
                         
                     </div>
                     <div class="mt-4 bg-gray-200 rounded-full h-2.5">
-                        <div 
-                            class="bg-green-500 h-2.5 rounded-full" 
-                            style="width: {{ percentage_correct }}%;">
-                        </div>
+                        <canvas id="linearProgressChart"></canvas>
+                     
                     </div>
                     
                 </div>
@@ -75,53 +96,16 @@
     </div>
 </div>
 
+<!-- div for the data from django -->
+<div id="chart-data" 
+     data-total-score="{{ total_score }}" 
+     data-percentage-correct="{{ percentage_correct }}">
+</div>
 
 
-<script>
+<script src="{% static 'js/chartResult.js' %}">
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const ctx = document.getElementById('percentageChart').getContext('2d');
-
-        // Lógica para mostrar el grafico circular de acierto, creando con graph.js, se crean las variables donde se pasan los valores que vienen desde la lógica o vista del backend
-        score = {{ total_score }};
-        porcent = {{percentage_correct }};
-        const totalScore = score;
-        const percentageCorrect = porcent; 
-
-        const myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Correctas', 'Incorrectas'],
-                datasets: [{
-                    label: 'Puntuación',
-                    data: [percentageCorrect, 100 - percentageCorrect],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 1)',  // Color para respuestas correctas
-                        'rgba(211, 211, 211, 1)'  // Color para respuestas incorrectas
-                    ],
-                    borderColor: 'white',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '70%', //  tamaño del agujero
-                plugins: {
-                    legend: {
-                        display: false // No mostrar la leyenda
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    });
 </script>
+
 
 {% endblock %}

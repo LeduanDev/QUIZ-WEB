@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import Question, Choice, Category,Section
+from .models import Question, Choice, Category,Section, CategoryimageSlider
 
 
 
@@ -14,3 +14,4 @@ class QuestionAdmin(admin.ModelAdmin):
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Category)
 admin.site.register(Section)
+admin.site.register(CategoryimageSlider)

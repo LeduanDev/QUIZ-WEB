@@ -1,52 +1,45 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Category, Question, Choice, Section, CategoryimageSlider
-from django.contrib import messages  # Asegúrate de importar messages
-
-def home_view(request):
-    categories = Category.objects.all()
-    section = Section.objects.all()
-    return render(request, 'paginas/home.html', {'categories': categories, 'section': section})
-
-
-## View where is going to show all category or quizz by section
-def categoriasSeccion(request, seccion_id=None):
-    seccion = get_object_or_404(Section, pk=seccion_id)
-    categorias = Category.objects.filter(section=seccion)
+document.addEventListener("DOMContentLoaded", function() {
+    var quizDataElement = document.getElementById('quiz-data');
+    var timeLeft = parseInt(quizDataElement.getAttribute('data-duration'), 10);
+    var timerElement = document.getElementById('timer');
+    var form = document.querySelector('form');
+    var timeLeftInput = document.getElementById('time-left');  // Campo oculto para el tiempo restante
+  
     
-    return render(request, 'paginas/Vcategorias.html', {
-        'seccion': seccion,
-        'categorias': categorias
-    })
+    function updateTimer() {
+        var minutes = Math.floor(timeLeft / 60);
+        var seconds = timeLeft % 60;
+        timerElement.textContent = `Tiempo restante: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  
+        timeLeftInput.value = timeLeft;  // Actualiza el valor del campo oculto
+  
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          alert("El tiempo se ha agotado, el quiz finalizará automáticamente.");
+      
+          // Imprimir las respuestas seleccionadas para depurar
+      
+          timeLeftInput.value = timeLeft;  // Actualiza el valor del campo oculto
+      
+          setTimeout(function() {
+              form.submit();  // Envía el formulario automáticamente después de un breve retraso
+          }, 100); // Retraso de 100ms
+      }
+      
+  
+        timeLeft--;
+    }
+  
+    var timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();  // Muestra el tiempo inicial
+  
+    form.addEventListener('submit', function() {
+        clearInterval(timerInterval);  // Detener el temporizador al enviar el formulario
+    });
+  });
+  
 
-
-## This view show all sections and have a search 
-def allSection(request):
-    filter_query = request.GET.get('filter', '')
-    section = Section.objects.filter(nombre__icontains=filter_query)
-    return render(request, 'paginas/Vsection.html', {'section': section, 'filter_query': filter_query})
-
-
-def details(request, categorie_id):
-    categorie = get_object_or_404(Category, pk=categorie_id)
-    # filter the images for category and make sure it hava an archive
-    images = CategoryimageSlider.objects.filter(category=categorie).exclude(images='')
-    question_count = categorie.question_set.count()
-    
-    return render(request, 'paginas/quizzDetails.html', {
-        'categorie': categorie,
-        'images': images,  # Passing the images to the template
-        'question_count': question_count
-    })
-
-
-
-
-def run_questions():
-    pass
-
-
-
-def quiz_view(request, category_id):
+  def quiz_view(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     questions = Question.objects.filter(category=category)
     seccion_id = category.section.id
@@ -61,11 +54,11 @@ def quiz_view(request, category_id):
     if request.method == 'POST':
         # Verificar el tiempo restante enviado desde el frontend
         time_left = int(request.POST.get('time_left', 0))
-        form_submitted = request.POST.get('form_submitted')  # Verificamos si el formulario fue enviado manualmente
 
-        # Si el tiempo se ha agotado y el formulario no fue enviado manualmente
-        if enable_timer and time_left <= 0 and not form_submitted:
-            messages.warning(request, "El tiempo se agotó. Procesando las respuestas enviadas.")  # Mensaje de alerta
+        # Si el tiempo se ha agotado, se calcularán los resultados con las respuestas enviadas hasta el momento
+        if enable_timer and time_left <= 0:
+            # Aquí podemos manejar el caso donde el tiempo ha expirado
+            print("El tiempo se ha agotado. Procesando las respuestas enviadas.")
 
         # Procesar el quiz normalmente (incluso si el tiempo se agotó)
         for question in questions:
@@ -85,7 +78,7 @@ def quiz_view(request, category_id):
         percentage_correct = round(percentage_correct, 1)
         total_score = min(total_score, 100)
 
-        # Redirigir a la página de resultados
+        # Redirigir directamente a la página de resultados sin necesidad de una página de "tiempo agotado"
         return render(request, 'paginas/result.html', {
             'total_score': total_score,
             'correct_answers': correct_answers,
@@ -103,5 +96,4 @@ def quiz_view(request, category_id):
         'enable_timer': enable_timer,  # Solo si el temporizador está habilitado
         'quiz_duration': quiz_duration  # Pasamos el tiempo estipulado
     })
-
 
